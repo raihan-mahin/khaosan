@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as TablesRouteImport } from './routes/tables'
+import { Route as ReservationTokenRouteImport } from './routes/reservation.$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const TablesRoute = TablesRouteImport.update({
   path: '/tables',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReservationTokenRoute = ReservationTokenRouteImport.update({
+  id: '/reservation/$token',
+  path: '/reservation/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/tables': typeof TablesRoute
+  '/reservation/$token': typeof ReservationTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/tables': typeof TablesRoute
+  '/reservation/$token': typeof ReservationTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/book': typeof BookRoute
   '/tables': typeof TablesRoute
+  '/reservation/$token': typeof ReservationTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/book' | '/tables'
+  fullPaths: '/' | '/book' | '/tables' | '/reservation/$token'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/book' | '/tables'
-  id: '__root__' | '/' | '/book' | '/tables'
+  to: '/' | '/book' | '/tables' | '/reservation/$token'
+  id: '__root__' | '/' | '/book' | '/tables' | '/reservation/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookRoute: typeof BookRoute
   TablesRoute: typeof TablesRoute
+  ReservationTokenRoute: typeof ReservationTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TablesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reservation/$token': {
+      id: '/reservation/$token'
+      path: '/reservation/$token'
+      fullPath: '/reservation/$token'
+      preLoaderRoute: typeof ReservationTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookRoute: BookRoute,
   TablesRoute: TablesRoute,
+  ReservationTokenRoute: ReservationTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
