@@ -10,13 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as TablesRouteImport } from './routes/tables'
+import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
 import { Route as ReservationTokenRouteImport } from './routes/reservation.$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookRoute = BookRouteImport.update({
@@ -29,6 +41,11 @@ const TablesRoute = TablesRouteImport.update({
   path: '/tables',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ReservationTokenRoute = ReservationTokenRouteImport.update({
   id: '/reservation/$token',
   path: '/reservation/$token',
@@ -37,33 +54,51 @@ const ReservationTokenRoute = ReservationTokenRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/tables': typeof TablesRoute
+  '/staff': typeof AuthenticatedStaffRoute
   '/reservation/$token': typeof ReservationTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/tables': typeof TablesRoute
+  '/staff': typeof AuthenticatedStaffRoute
   '/reservation/$token': typeof ReservationTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/tables': typeof TablesRoute
+  '/_authenticated/staff': typeof AuthenticatedStaffRoute
   '/reservation/$token': typeof ReservationTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/book' | '/tables' | '/reservation/$token'
+  fullPaths:
+    '/' | '/auth' | '/book' | '/tables' | '/staff' | '/reservation/$token'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/book' | '/tables' | '/reservation/$token'
-  id: '__root__' | '/' | '/book' | '/tables' | '/reservation/$token'
+  to: '/' | '/auth' | '/book' | '/tables' | '/staff' | '/reservation/$token'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/book'
+    | '/tables'
+    | '/_authenticated/staff'
+    | '/reservation/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   BookRoute: typeof BookRoute
   TablesRoute: typeof TablesRoute
   ReservationTokenRoute: typeof ReservationTokenRoute
@@ -76,6 +111,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book': {
@@ -92,6 +141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TablesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/staff': {
+      id: '/_authenticated/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof AuthenticatedStaffRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/reservation/$token': {
       id: '/reservation/$token'
       path: '/reservation/$token'
@@ -102,8 +158,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedStaffRoute: typeof AuthenticatedStaffRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedStaffRoute: AuthenticatedStaffRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   BookRoute: BookRoute,
   TablesRoute: TablesRoute,
   ReservationTokenRoute: ReservationTokenRoute,
