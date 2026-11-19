@@ -1,26 +1,34 @@
-# Khaosan
+# Khaosan Restaurant Reservations
 
-Implement exactly the screenshot and nothing else
+A mobile-friendly restaurant booking and table management project by **Raihan Mahin**, built with **Lovable**. Guests can find a time and reserve a table, while staff have tools to manage reservations and table status.
 
-This project was built with [Lovable](https://lovable.dev).
+**[Open the website](https://khaosan.lovable.app)**
 
-**Live app**: https://khaosan.lovable.app
+## Project purpose
 
-## Build with Lovable
+This project explores both sides of the restaurant experience: a simple booking journey for guests and an operational view for staff. It turns a service idea into an interactive product that connects customer convenience with table availability and restaurant workflows.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/0edcc93d-18cf-4065-9ec1-87b587962bd5).
+## Guest experience
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+- Choose a date, party size and available time.
+- Follow a three-step booking journey: visit details, guest details and confirmation.
+- Temporarily hold a time while completing the booking.
+- Manage a reservation through a private link, including cancellation or rescheduling.
+- View current table availability through a floor plan or list.
+- Join a waitlist when a suitable table is unavailable.
 
-## Development
+## Staff tools
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+- View reservations, the floor plan, a timeline and the waitlist.
+- Manage walk-ins, arrivals, seating, departures and table cleaning.
+- Block tables and adjust restaurant settings.
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+## How it was built
+
+I used Lovable for AI-assisted development, providing the product brief and directing the guest journey, operational requirements and interface through prompts. Lovable generated and iterated the application code.
+
+Booking and availability rules are handled in Postgres functions, called through Supabase. Public availability views are separated from staff-only guest information. The repository contains the application code and is connected to Lovable through GitHub sync.
+
+## Current setup
+
+The current hours, floor plan and policies are demonstration settings. Venue details need to be confirmed before operational use. Email and SMS booking confirmations are not connected.
